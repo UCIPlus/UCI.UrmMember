@@ -2,11 +2,11 @@
 
 ## In Progress
 
-（暂无进行中的任务）
+- [TASK001] 复刻 UCI 前端项目 - 将 backend/app/uci 的 PHP View 前端迁移为 uni-app 小程序，已完成环境配置和 API 层，当前进度 50%
 
 ## Pending
 
-（暂无待办任务）
+（暂无待开始的任务）
 
 ## Completed
 
@@ -23,17 +23,20 @@
 本文件用于跟踪项目中的所有任务。每个任务都有独立的文件，格式为 `TASKID-taskname.md`。
 
 ### 任务状态
+
 - **Pending**：待开始
 - **In Progress**：进行中
 - **Completed**：已完成
 - **Abandoned**：已放弃
 
 ### 如何使用
+
 1. 创建新任务：使用命令 `add task` 或 `create task`
 2. 更新任务：使用命令 `update task [ID]`
 3. 查看任务：使用命令 `show tasks [filter]`
 
 ### 任务示例
+
 ```markdown
 ## Pending
 - [TASK001] 实现用户登录功能 - 等待后端 API 文档
