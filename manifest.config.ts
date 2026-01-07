@@ -10,9 +10,9 @@
 import { defineManifestConfig } from '@uni-helper/vite-plugin-uni-manifest'
 
 export default defineManifestConfig({
-  'name': 'wot-starter',
-  'appid': '__UNI__1208592',
-  'description': '',
+  'name': 'URM Member',
+  'appid': '__UNI__9853322',
+  'description': 'UCI Unified Resource Management System - Member Module',
   'versionName': '1.0.0',
   'versionCode': '100',
   'transformPx': false,
@@ -64,7 +64,7 @@ export default defineManifestConfig({
     optimization: {
       subPackages: true,
     },
-    appid: '',
+    appid: 'wx6cc4bd9b379e98a6',
     setting: {
       urlCheck: false,
     },

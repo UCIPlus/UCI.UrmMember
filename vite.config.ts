@@ -11,7 +11,31 @@ import { UniEchartsResolver } from 'uni-echarts/resolver'
 import { UniEcharts } from 'uni-echarts/vite'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
+
+// 自定义插件：过滤不需要的模块
+function excludeModules(): Plugin {
+  return {
+    name: 'exclude-modules',
+    enforce: 'pre',
+    resolveId(id) {
+      // 排除示例页面目录下的文件
+      if (id.includes('/subPages/') || id.includes('/subEcharts/') || id.includes('/subAsyncEcharts/')) {
+        return {
+          id,
+          external: true,
+        }
+      }
+    },
+    moduleParsed(module) {
+      // 排除导入示例页面的模块
+      if (module.id.includes('/subPages/') || module.id.includes('/subEcharts/') || module.id.includes('/subAsyncEcharts/')) {
+        throw new Error(`排除模块: ${module.id}`)
+      }
+    },
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
@@ -19,21 +43,19 @@ export default defineConfig({
     exclude: process.env.NODE_ENV === 'development' ? ['wot-design-uni', 'uni-echarts'] : [],
   },
   plugins: [
+    // 自定义插件：排除示例页面模块
+    excludeModules(),
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages
     UniHelperPages({
       dts: 'src/uni-pages.d.ts',
-      subPackages: [
-        'src/subPages',
-        'src/subEcharts',
-        'src/subAsyncEcharts',
-      ],
+      subPackages: [],
       /**
        * 排除的页面，相对于 dir 和 subPackages
        * @default []
        */
-      exclude: ['**/components/**/*.*'],
+      exclude: ['**/components/**/*.*', '**/subPages/**/*.*', '**/subEcharts/**/*.*', '**/subAsyncEcharts/**/*.*'],
     }),
     // https://github.com/uni-helper/vite-plugin-uni-layouts
     UniHelperLayouts(),
@@ -60,12 +82,12 @@ export default defineConfig({
         from: '@wot-ui/router',
         imports: ['createRouter', 'useRouter', 'useRoute'],
       }, {
-        from: 'wot-design-uni',
-        imports: ['useToast', 'useMessage', 'useNotify', 'CommonUtil'],
-      }, {
-        from: 'alova/client',
-        imports: ['usePagination', 'useRequest'],
-      }],
+          from: 'wot-design-uni',
+          imports: ['useToast', 'useMessage', 'useNotify', 'CommonUtil'],
+        }, {
+          from: 'alova/client',
+          imports: ['usePagination', 'useRequest'],
+        }],
       dts: 'src/auto-imports.d.ts',
       dirs: ['src/composables', 'src/store', 'src/utils', 'src/api'],
       vueTemplate: true,
